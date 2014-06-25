@@ -10,7 +10,7 @@ Team members: Jordan Larson, Evan Bell, Brenton Klassen
 #include <stdlib.h>
 using namespace std;
 
-void menu(AssignmentHandler);
+//void menu(AssignmentHandler);
 int getNumber(int, int, std::string = "");
 
 void main()
@@ -55,15 +55,17 @@ void main()
         case 6:
             Assignments.importAssignmentsFromFile("Assignments.txt");
             break;
+		case 7:
+			break;
 		default:
-			cout << "Something's messed up...\n";
+			cout << "Invalid Input";
 			break;
 		}
 
 	} while (choice != 7);
 
 	Assignments.importAssignmentsFromFile("Assignments.txt");
-    Assignments.displayAllAssignments(cout);
+    //Assignments.displayAllAssignments(cout);
     
 	system("pause");
 }

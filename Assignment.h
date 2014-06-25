@@ -7,6 +7,7 @@ Assignment class header
 #include "Date.h"
 #include <string>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 class Assignment {
@@ -22,10 +23,10 @@ public:
 
 	void Assignment::displayAssignment(ostream& out) const
 	{
-		out << "Assigned Date: " << assignedDate << "\t"
-			<< "Due Date: " << dueDate << "\t" << endl
-			<< "Assignment Description: " << description
-			<< "Assignment Status: " << "\t" << getCurrentStatus() << endl << endl;
+		out << "Assigned Date: " << assignedDate << setw(15)
+			<< "Due Date: " << dueDate << setw(15)
+			<< "Status: " << getCurrentStatus() << endl
+			<< "Description: " << description << endl << endl;
 	}
 
 	//Assignment::~Assignment(); // this was causing a lnk error
