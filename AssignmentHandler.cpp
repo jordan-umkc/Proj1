@@ -15,26 +15,15 @@ using namespace std;
 // default, no argument constructor
 void AssignmentHandler::addAssignment()
 {
-	Date assignedDate, dueDate;
-	string description;
-
-	cout << "\nEnter the assignment's assigned date...\n";
-	cin >> assignedDate;
-	cout << "\nEnter the assignment's due date...\n";
-	cin >> dueDate;
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	cout << "\nEnter the description: ";
-	getline(cin, description);
-	cout << "\nEnter the status: ";
-
-	assignedAssignments.insert(Assignment(assignedDate, dueDate, description));
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	assignedAssignments.insert(*temp);
 }
 
 void AssignmentHandler::editAssignment()
 {
 
 }
-
 
 int AssignmentHandler::getLateAssignments()
 {
@@ -43,43 +32,25 @@ int AssignmentHandler::getLateAssignments()
 
 void AssignmentHandler::completeAnAssignment()
 {
-    Date *theDueDate, *theAssignedDate;
-    int tempintYear, tempintMonth, tempintDay;
-    string theDescription;
-    displayAllAssignments(cout);
-    cout << "Above is a list of the assignments. To make sure the correct assignment is flagged as completed, "
-        << "first enter the year of the assigned date Year: " << endl;
-    cin >> tempintYear;
-    cout << "Enter the assigned date Month: " << endl;
-    cin >> tempintMonth;
-    cout << "Enter the assigned date Day: " << endl;
-    cin >> tempintDay;
-    theAssignedDate = new Date(tempintYear, tempintMonth, tempintDay);
-
-    cout <<"Now enter the due date Year: " << endl;
-    cin >> tempintYear;
-    cout << "Enter the due date Month: " << endl;
-    cin >> tempintMonth;
-    cout << "Enter the due date Day: " << endl;
-    cin >> tempintDay;
-    theDueDate = new Date(tempintYear, tempintMonth, tempintDay);
-
-    cout << "Finally, enter the comments for the assignment: " << endl;
-    cin >> theDescription;
-
-    
-    OrderedAssignmentList::iterator iter;
-    for (iter = assignedAssignments.begin(); iter != assignedAssignments.end(); iter++)
-    {
-        if (iter->getAssignedDate() == *theAssignedDate && iter->getDueDate() == *theDueDate
-            && iter->getDescription() == theDescription)
-        {
-            iter->completeAssignment();
-            completeAssignments.insert(*iter);
-	        assignedAssignments.remove(*iter);
-        }
-    }
-    
+	// ask the user to input the information of the assignment they completed
+	Date theDueDate, theAssignedDate;
+	string theDescription;
+	cout << "Enter Assigned Date (ex. 11/11/1111): ";
+	cin >> theAssignedDate;
+	cout << "Enter Due Date (ex. 11/11/1111): ";
+	cin >> theDueDate;
+	cout << "Enter Description: ";
+	cin >> theDescription;
+	// make a new assignment with the user input
+	Assignment *temp = new Assignment(theAssignedDate, theDueDate, theDescription);
+	// create a const_iterator that points to the assignment in the assignedAssignments (OrderedAssignmentList)
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	// remove the assignment from assignedAssignments
+	assignedAssignments.remove(iter->data());
+	// change status of assignment to complete
+	temp->completeAssignment();
+	// add assignment to completed assignments (OrderedAssignmentList)
+	completeAssignments.insert(*temp);
 }
 
 void AssignmentHandler::overdueAnAssignment(Assignment& assignment)

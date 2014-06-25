@@ -12,7 +12,7 @@ using namespace std;
 
 class Assignment {
 public:
-	Assignment() : assignedDate(), dueDate(), description("") {}
+	Assignment() : assignedDate(), dueDate(), description("") { currentStatus = ASSIGNED; }
 	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
 	{
 		currentStatus = ASSIGNED;
@@ -21,6 +21,23 @@ public:
         assignedDate = anAssignedDate;
         description = aDescription;
 		*/
+	}
+
+	const Assignment& userInput()
+	{ 
+		Date theDueDate, theAssignedDate;
+		string theDescription;
+		cout << "Enter Assigned Date (ex. 11/11/1111): ";
+		cin >> theAssignedDate;
+		cout << "Enter Due Date (ex. 11/11/1111): ";
+		cin >> theDueDate;
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		cout << "Enter Description: ";
+		getline(cin, theDescription);
+		assignedDate = theAssignedDate;
+		dueDate = theDueDate;
+		description = theDescription;
+		return *this;
 	}
 
 	void Assignment::displayAssignment(ostream& out) const
@@ -36,13 +53,11 @@ public:
     Date getDueDate() const {return dueDate;}
     string getDescription() const {return description;}
 
-
     string getCurrentStatus() const
     {
         if (currentStatus == ASSIGNED) {return "ASSIGNED";}
         else if (currentStatus == COMPLETED) {return "COMPLETE";}
-        else if (currentStatus == LATE) {return "LATE";}
-        //handle an error
+        else {return "LATE";}
     }
     void completeAssignment() {currentStatus = COMPLETED;}
     void overdueAssignment() {currentStatus = LATE;}
@@ -50,11 +65,21 @@ public:
     //Assignment::status getStatus() const {return currentStatus;}
 
 
-	bool operator ==(Assignment other){
+	bool operator ==(const Assignment other) const{
 		return assignedDate == other.assignedDate &&
             dueDate == other.dueDate && description == other.description && currentStatus == other.currentStatus;
 	}
 	//not sure status needs to be checked here? Let's discuss - it's probably best to leave it as is, however
+
+	const Assignment operator =(const Assignment theAssignment)
+	{
+		return Assignment(*this);
+	}
+
+	const Assignment data() const
+	{
+		return *this;
+	}
 
 private:
 	Date assignedDate;

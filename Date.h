@@ -1,7 +1,7 @@
 #ifndef __DATE_H__
 #define __DATE_H__
 
-#include <stdexcept> 
+#include <stdexcept>
 #include <iostream>
 #include "StringTokenizer.h"
 using namespace std;
@@ -126,7 +126,7 @@ public:
         return day > other.day;
     }
 
-    bool operator ==(Date other){
+    bool operator ==(const Date other) const{
         return year == other.year && month == other.month && day == other.day;
     }
 
