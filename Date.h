@@ -3,6 +3,7 @@
 
 #include <stdexcept> 
 #include <iostream>
+#include "StringTokenizer.h"
 using namespace std;
 
 const int DAYS[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -30,13 +31,14 @@ public:
 
 	friend istream& operator >> (istream& in, Date& d)
 	{
+		string inDate;
+		
 		do {
-			cout << "\nYou must enter a valid date.\nEnter the year: ";
-			in >> d.year;
-			cout << "Enter the month: ";
-			in >> d.month;
-			cout << "Enter the day: ";
-			in >> d.day;
+			in >> inDate;
+			String_Tokenizer dt(inDate, "/");
+			d.setMonth(stoi(trim(dt.next_token())));
+			d.setDay(stoi(trim(dt.next_token())));
+			d.setYear(stoi(trim(dt.next_token())));
 		} while (!valid_date(d.year, d.month, d.day));
 
 		return in;
@@ -136,6 +138,13 @@ public:
         return this->operator>(other) || this->operator==(other);
     }
 
+	static string trim(const string& the_string)
+	{
+		size_t p = the_string.find_first_not_of(" ");
+		if (p == string::npos) return "";
+		size_t q = the_string.find_last_not_of(" ");
+		return the_string.substr(p, q - p + 1);
+	}
     //we need to check if the date is valid though
 
     int getYear() { return year; }
@@ -145,8 +154,6 @@ public:
     void setYear(int theYear) { year = theYear; }
     void setMonth(int theMonth) { month = theMonth; }
     void setDay(int theDay) { day = theDay; }
-
-
 
 };
 #endif

@@ -10,7 +10,6 @@ Team members: Jordan Larson, Evan Bell, Brenton Klassen
 #include <stdlib.h>
 using namespace std;
 
-//void menu(AssignmentHandler);
 int getNumber(int, int, std::string = "");
 
 void main()
@@ -63,9 +62,6 @@ void main()
 		}
 
 	} while (choice != 7);
-
-	Assignments.importAssignmentsFromFile("Assignments.txt");
-    //Assignments.displayAllAssignments(cout);
     
 	system("pause");
 }
@@ -80,17 +76,17 @@ int getNumber(int low, int high, std::string message)
 		message = "Enter a number between " + std::to_string(low) + " and " + std::to_string(high) + ": ";
 	do
 	{
-		std::cout << message;
-		std::cin >> number;
+		cout << message;
+		cin >> number;
 		while (std::cin.fail())
 		{
-			std::cout << "You must enter an integer: ";
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<int>::max(), '\n');
-			std::cin >> number;
+			cout << "You must enter an integer: ";
+			cin.clear();
+			cin.ignore(std::numeric_limits<int>::max(), '\n');
+			cin >> number;
 		}
 		if (number < low || number > high)
-			std::cout << "The number must be between " << low << " and " << high << ".\n";
+			cout << "The number must be between " << low << " and " << high << ".\n";
 		else
 			valid = true;
 	} while (!valid);

@@ -12,13 +12,15 @@ using namespace std;
 
 class Assignment {
 public:
-	Assignment::Assignment() : assignedDate(), dueDate(), description("") {}
-	Assignment::Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
+	Assignment() : assignedDate(), dueDate(), description("") {}
+	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
 	{
 		currentStatus = ASSIGNED;
+		/* These variables have already been set using member initialization
         dueDate = aDueDate;
         assignedDate = anAssignedDate;
         description = aDescription;
+		*/
 	}
 
 	void Assignment::displayAssignment(ostream& out) const
@@ -57,7 +59,7 @@ public:
 private:
 	Date assignedDate;
 	Date dueDate;
-	std::string description;
+	string description;
     enum status {LATE = 0, ASSIGNED = 1, COMPLETED = 2}; //stated explicitly so we can use the array below easily
     
     status currentStatus;
