@@ -22,7 +22,39 @@ void AssignmentHandler::addAssignment()
 
 void AssignmentHandler::editAssignment()
 {
+	cout << "Enter the assignment date, due date and description of the assignment you want to edit." << endl;
+	// make a new assignment with the user input
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	// create a const_iterator that points to the assignment that will be edited in the assignedAssignments (OrderedAssignmentList)
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	char choice;
+	do
+	{
+		cout << "What do you want to edit?" << endl
+			<< "1. Assigned Date" << endl
+			<< "2. Due Date" << endl
+			<< "3. Description" << endl
+			<< "4. Nothing" << endl;
+		cin >> choice;
+	} while (choice >= 1 && choice <= 4);
 
+	switch (choice)
+	{
+	case '1':
+		
+		break;
+	case '2':
+		break;
+	case '3':
+		break;
+	case '4':
+		return;
+		break;
+	default:
+		cout << "Invalid Response" << endl;
+		break;
+	}
 }
 
 int AssignmentHandler::getLateAssignments()
@@ -32,18 +64,11 @@ int AssignmentHandler::getLateAssignments()
 
 void AssignmentHandler::completeAnAssignment()
 {
-	// ask the user to input the information of the assignment they completed
-	Date theDueDate, theAssignedDate;
-	string theDescription;
-	cout << "Enter Assigned Date (ex. 11/11/1111): ";
-	cin >> theAssignedDate;
-	cout << "Enter Due Date (ex. 11/11/1111): ";
-	cin >> theDueDate;
-	cout << "Enter Description: ";
-	cin >> theDescription;
+	cout << "Enter the assignment date, due date and description of the assignment you completed." << endl;
 	// make a new assignment with the user input
-	Assignment *temp = new Assignment(theAssignedDate, theDueDate, theDescription);
-	// create a const_iterator that points to the assignment in the assignedAssignments (OrderedAssignmentList)
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	// create a const_iterator that points to the assignment that will be removed in the assignedAssignments (OrderedAssignmentList)
 	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(iter->data());

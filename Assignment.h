@@ -22,7 +22,7 @@ public:
         description = aDescription;
 		*/
 	}
-
+	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description) { currentStatus = a.currentStatus; }
 	const Assignment& userInput()
 	{ 
 		Date theDueDate, theAssignedDate;
@@ -48,7 +48,11 @@ public:
 			<< "Description: " << description << endl << endl;
 	}
 
-	//Assignment::~Assignment(); // this was causing a lnk error
+	void setAssignedDate(const Assignment& theDate)
+	{
+		assignedDate = theDate;
+	}
+
 	Date getAssignedDate() const { return assignedDate; }
     Date getDueDate() const {return dueDate;}
     string getDescription() const {return description;}
@@ -71,9 +75,13 @@ public:
 	}
 	//not sure status needs to be checked here? Let's discuss - it's probably best to leave it as is, however
 
-	const Assignment operator =(const Assignment theAssignment)
+	Assignment operator =(const Assignment theAssignment)
 	{
-		return Assignment(*this);
+		if (*this == theAssignment) return *this;
+		assignedDate = theAssignment.assignedDate;
+		dueDate = theAssignment.dueDate;
+		description = theAssignment.description;
+		return *this;
 	}
 
 	const Assignment data() const
