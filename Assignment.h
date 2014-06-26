@@ -7,71 +7,39 @@ Assignment class header
 #include "Date.h"
 #include <string>
 #include <iostream>
-#include <iomanip>
 using namespace std;
 
 class Assignment {
 public:
-	Assignment() : assignedDate(), dueDate(), description("") { currentStatus = ASSIGNED; }
-	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
+	Assignment::Assignment() : assignedDate(), dueDate(), description("") {}
+	Assignment::Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
 	{
 		currentStatus = ASSIGNED;
-		/* These variables have already been set using member initialization
         dueDate = aDueDate;
         assignedDate = anAssignedDate;
         description = aDescription;
-		*/
-	}
-	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description) { currentStatus = a.currentStatus; }
-	const Assignment& userInput()
-	{ 
-		Date theDueDate, theAssignedDate;
-		string theDescription;
-		cout << "Enter Assigned Date (ex. 11/11/1111): ";
-		cin >> theAssignedDate;
-		cout << "Enter Due Date (ex. 11/11/1111): ";
-		cin >> theDueDate;
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		cout << "Enter Description: ";
-		getline(cin, theDescription);
-		assignedDate = theAssignedDate;
-		dueDate = theDueDate;
-		description = theDescription;
-		return *this;
 	}
 
-	void displayAssignment(ostream& out) const
+	void Assignment::displayAssignment(ostream& out) const
 	{
-		out << "Assigned Date: " << assignedDate << setw(15)
-			<< "Due Date: " << dueDate << setw(15)
-			<< "Status: " << getCurrentStatus() << endl
-			<< "Description: " << description << endl << endl;
+		out << "Assigned Date: " << assignedDate << "\t"
+			<< "Due Date: " << dueDate << "\t" << endl
+			<< "Assignment Description: " << description
+			<< "Assignment Status: " << "\t" << getCurrentStatus() << endl << endl;
 	}
 
-	void setAssignedDate(const Date& theDate)
-	{
-		assignedDate = theDate;
-	}
-
-	void setDueDate(const Date& theDate)
-	{
-		dueDate = theDate;
-	}
-
-	void setDescription(const string& theDescription)
-	{
-		description = theDescription;
-	}
-
+	//Assignment::~Assignment(); // this was causing a lnk error
 	Date getAssignedDate() const { return assignedDate; }
     Date getDueDate() const {return dueDate;}
     string getDescription() const {return description;}
+
 
     string getCurrentStatus() const
     {
         if (currentStatus == ASSIGNED) {return "ASSIGNED";}
         else if (currentStatus == COMPLETED) {return "COMPLETE";}
-        else {return "LATE";}
+        else if (currentStatus == LATE) {return "LATE";}
+        //handle an error
     }
     void completeAssignment() {currentStatus = COMPLETED;}
     void overdueAssignment() {currentStatus = LATE;}
@@ -81,28 +49,14 @@ public:
 
 	bool operator ==(const Assignment other) const{
 		return assignedDate == other.assignedDate &&
-            dueDate == other.dueDate && description == other.description && currentStatus == other.currentStatus;
+            dueDate == other.dueDate && description == other.description; //&& currentStatus == other.currentStatus;
 	}
 	//not sure status needs to be checked here? Let's discuss - it's probably best to leave it as is, however
-
-	const Assignment operator =(const Assignment& theAssignment)
-	{
-		if (*this == theAssignment) return *this;
-		assignedDate = theAssignment.assignedDate;
-		dueDate = theAssignment.dueDate;
-		description = theAssignment.description;
-		return *this;
-	}
-
-	const Assignment data() const
-	{
-		return *this;
-	}
 
 private:
 	Date assignedDate;
 	Date dueDate;
-	string description;
+	std::string description;
     enum status {LATE = 0, ASSIGNED = 1, COMPLETED = 2}; //stated explicitly so we can use the array below easily
     
     status currentStatus;

@@ -11,7 +11,6 @@ class AssignmentHandler {
     
 public:
 	AssignmentHandler() : assignedAssignments(), completeAssignments() {} // default constructor
-	
 	void addAssignment();
 	void editAssignment();
     void displayOrderedAssignedAssignmentList(ostream& out);
@@ -23,6 +22,7 @@ public:
     void countLateAssignments();
     void completeAnAssignment();
     void overdueAnAssignment(Assignment& assignment);
+    void dummyFunction();
 
 private:
 	OrderedAssignmentList assignedAssignments;
