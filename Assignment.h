@@ -40,7 +40,7 @@ public:
 		return *this;
 	}
 
-	void Assignment::displayAssignment(ostream& out) const
+	void displayAssignment(ostream& out) const
 	{
 		out << "Assigned Date: " << assignedDate << setw(15)
 			<< "Due Date: " << dueDate << setw(15)
@@ -48,9 +48,19 @@ public:
 			<< "Description: " << description << endl << endl;
 	}
 
-	void setAssignedDate(const Assignment& theDate)
+	void setAssignedDate(const Date& theDate)
 	{
 		assignedDate = theDate;
+	}
+
+	void setDueDate(const Date& theDate)
+	{
+		dueDate = theDate;
+	}
+
+	void setDescription(const string& theDescription)
+	{
+		description = theDescription;
 	}
 
 	Date getAssignedDate() const { return assignedDate; }
@@ -75,7 +85,7 @@ public:
 	}
 	//not sure status needs to be checked here? Let's discuss - it's probably best to leave it as is, however
 
-	Assignment operator =(const Assignment theAssignment)
+	const Assignment operator =(const Assignment& theAssignment)
 	{
 		if (*this == theAssignment) return *this;
 		assignedDate = theAssignment.assignedDate;

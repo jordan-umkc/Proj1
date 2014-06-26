@@ -27,7 +27,7 @@ void main()
 			<< "1. Add a new assignment\n"
 			<< "2. Complete an assignment\n"
 			<< "3. Edit an assignment\n"
-			<< "4. Provide a list of assignments ordered by due date\n"
+			<< "4. Display all assignments\n"
 			<< "5. Count the number of late assignments\n"
 			<< "6. Read assignments from file\n"
 			<< "7. Exit\n\n";
@@ -43,7 +43,7 @@ void main()
             Assignments.completeAnAssignment();
             break;
         case 3:
-            //EDIT ASSIGNMENT HERE
+			Assignments.editAssignment(); 
             break;
 		case 4:
 			Assignments.displayAllAssignments(cout);

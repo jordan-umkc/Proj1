@@ -42,18 +42,48 @@ void AssignmentHandler::editAssignment()
 	switch (choice)
 	{
 	case '1':
-		
+	{
+		Date theAssignedDate;
+		cout << "Enter Assigned Date (ex. 11/11/1111): ";
+		cin >> theAssignedDate;
+		temp->setAssignedDate(theAssignedDate);
+	}
 		break;
 	case '2':
+	{
+		Date theDueDate;
+		cout << "Enter Due Date (ex. 11/11/1111): ";
+		cin >> theDueDate;
+		temp->setDueDate(theDueDate);
+	}
 		break;
 	case '3':
+	{
+		string theDescription;
+		cout << "Enter Description: ";
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		getline(cin, theDescription);
+		temp->setDescription(theDescription);
+	}
 		break;
 	case '4':
 		return;
 		break;
 	default:
 		cout << "Invalid Response" << endl;
+		return;
 		break;
+	}
+
+	if (temp->getCurrentStatus() == "ASSIGNED" || temp->getCurrentStatus() == "LATE")
+	{
+		assignedAssignments.remove(iter->data());
+		assignedAssignments.insert(*temp);
+	}
+	else
+	{
+		completeAssignments.remove(iter->data());
+		completeAssignments.insert(*temp);
 	}
 }
 
