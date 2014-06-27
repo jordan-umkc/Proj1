@@ -5,12 +5,12 @@ Due July 1, 2014
 Team members: Jordan Larson, Evan Bell, Brenton Klassen
 */
 
+#include "HelperFunctions.h"
 #include "AssignmentHandler.h"
 #include <iostream>
 #include <stdlib.h>
-using namespace std;
 
-int getNumber(int, int, std::string = "");
+int getNumber(int low, int high, std::string message);
 
 void main()
 {
@@ -63,32 +63,6 @@ void main()
 
 	} while (choice != 7);
     
-	system("pause");
 }
 
 
-// function to get number from user and take care of incorrect input
-int getNumber(int low, int high, std::string message)
-{
-	int number;
-	bool valid = false;
-	if (message == "")
-		message = "Enter a number between " + std::to_string(low) + " and " + std::to_string(high) + ": ";
-	do
-	{
-		cout << message;
-		cin >> number;
-		while (std::cin.fail())
-		{
-			cout << "You must enter an integer: ";
-			cin.clear();
-			cin.ignore(std::numeric_limits<int>::max(), '\n');
-			cin >> number;
-		}
-		if (number < low || number > high)
-			cout << "The number must be between " << low << " and " << high << ".\n";
-		else
-			valid = true;
-	} while (!valid);
-	return number;
-}

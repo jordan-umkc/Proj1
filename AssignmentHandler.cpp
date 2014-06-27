@@ -15,19 +15,19 @@ using namespace std;
 // default, no argument constructor
 void AssignmentHandler::addAssignment()
 {
-	Assignment *temp = new Assignment();
-	temp->userInput();
-	assignedAssignments.insert(*temp);
+	Assignment temp;
+	temp.userInput();
+	assignedAssignments.insert(temp);
 }
 
 void AssignmentHandler::editAssignment()
 {
 	cout << "Enter the assignment date, due date and description of the assignment you want to edit." << endl;
 	// make a new assignment with the user input
-	Assignment *temp = new Assignment();
-	temp->userInput();
+	Assignment temp;
+	temp.userInput();
 	// create a const_iterator that points to the assignment that will be edited in the assignedAssignments (OrderedAssignmentList)
-	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(temp);
 	char choice;
 	do
 	{
@@ -46,7 +46,7 @@ void AssignmentHandler::editAssignment()
 		Date theAssignedDate;
 		cout << "Enter Assigned Date (ex. 11/11/1111): ";
 		cin >> theAssignedDate;
-		temp->setAssignedDate(theAssignedDate);
+		temp.setAssignedDate(theAssignedDate);
 	}
 		break;
 	case '2':
@@ -54,7 +54,7 @@ void AssignmentHandler::editAssignment()
 		Date theDueDate;
 		cout << "Enter Due Date (ex. 11/11/1111): ";
 		cin >> theDueDate;
-		temp->setDueDate(theDueDate);
+		temp.setDueDate(theDueDate);
 	}
 		break;
 	case '3':
@@ -63,7 +63,7 @@ void AssignmentHandler::editAssignment()
 		cout << "Enter Description: ";
 		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		getline(cin, theDescription);
-		temp->setDescription(theDescription);
+		temp.setDescription(theDescription);
 	}
 		break;
 	case '4':
@@ -75,15 +75,15 @@ void AssignmentHandler::editAssignment()
 		break;
 	}
 
-	if (temp->getCurrentStatus() == "ASSIGNED" || temp->getCurrentStatus() == "LATE")
+	if (temp.getCurrentStatus() == "ASSIGNED" || temp.getCurrentStatus() == "LATE")
 	{
 		assignedAssignments.remove(iter->data());
-		assignedAssignments.insert(*temp);
+		assignedAssignments.insert(temp);
 	}
 	else
 	{
 		completeAssignments.remove(iter->data());
-		completeAssignments.insert(*temp);
+		completeAssignments.insert(temp);
 	}
 }
 
@@ -96,16 +96,16 @@ void AssignmentHandler::completeAnAssignment()
 {
 	cout << "Enter the assignment date, due date and description of the assignment you completed." << endl;
 	// make a new assignment with the user input
-	Assignment *temp = new Assignment();
-	temp->userInput();
+	Assignment temp;
+	temp.userInput();
 	// create a const_iterator that points to the assignment that will be removed in the assignedAssignments (OrderedAssignmentList)
-	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(temp);
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(iter->data());
 	// change status of assignment to complete
-	temp->completeAssignment();
+	temp.completeAssignment();
 	// add assignment to completed assignments (OrderedAssignmentList)
-	completeAssignments.insert(*temp);
+	completeAssignments.insert(temp);
 }
 
 void AssignmentHandler::overdueAnAssignment(Assignment& assignment)
@@ -161,7 +161,7 @@ void AssignmentHandler::importAssignmentsFromFile(const string& fName)
 	ifstream in(fName.c_str(), ios::app);
 	if (in)
 	{
-        Assignment* temp_assignment;
+        Assignment temp_assignment;
 		Date assignedDate, dueDate;
 		string aDate, dDate, desc, line;
 		while (getline(in, line))
@@ -181,8 +181,8 @@ void AssignmentHandler::importAssignmentsFromFile(const string& fName)
 			dueDate.setYear(stoi(trim(stDDate.next_token())));
 			// read in description
 			desc = trim(stLine.next_token());
-            temp_assignment = new Assignment(assignedDate, dueDate, desc);
-            assignedAssignments.insert(*temp_assignment);
+            temp_assignment = Assignment(assignedDate, dueDate, desc);
+            assignedAssignments.insert(temp_assignment);
 		}
 	}
 	else
