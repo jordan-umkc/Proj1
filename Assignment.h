@@ -12,17 +12,19 @@ using namespace std;
 
 class Assignment {
 public:
+	// default no-argument constructor
 	Assignment() : assignedDate(), dueDate(), description("") { currentStatus = ASSIGNED; }
+
+	// argument constructor
 	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
 	{
 		currentStatus = ASSIGNED;
-		/* These variables have already been set using member initialization
-        dueDate = aDueDate;
-        assignedDate = anAssignedDate;
-        description = aDescription;
-		*/
 	}
+
+	// copy constructor
 	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description) { currentStatus = a.currentStatus; }
+
+	// read in user data
 	const Assignment& userInput()
 	{ 
 		Date theDueDate, theAssignedDate;
@@ -40,6 +42,7 @@ public:
 		return *this;
 	}
 
+	
 	void displayAssignment(ostream& out) const
 	{
 		out << "Assigned Date: " << assignedDate << setw(15)
@@ -78,12 +81,10 @@ public:
 
     //Assignment::status getStatus() const {return currentStatus;}
 
-
+	// assigned date is id
 	bool operator ==(const Assignment other) const{
-		return assignedDate == other.assignedDate &&
-            dueDate == other.dueDate && description == other.description && currentStatus == other.currentStatus;
+		return assignedDate == other.assignedDate;
 	}
-	//not sure status needs to be checked here? Let's discuss - it's probably best to leave it as is, however
 
 	const Assignment operator =(const Assignment& theAssignment)
 	{
@@ -94,10 +95,10 @@ public:
 		return *this;
 	}
 
-	const Assignment data() const
-	{
-		return *this;
+	bool operator <(const Assignment& other) const {
+		return assignedDate < other.assignedDate;
 	}
+
 
 private:
 	Date assignedDate;

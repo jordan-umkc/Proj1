@@ -4,8 +4,8 @@ Assignment handler class
 
 #ifndef __ASSIGNMENTHANDLER_H__
 #define __ASSIGNMENTHANDLER_H__
-#include "OrderedAssignmentList.h"
-#include <iterator>
+#include "Ordered_List.h"
+#include "Assignment.h"
 
 class AssignmentHandler {
     
@@ -25,8 +25,8 @@ public:
     void overdueAnAssignment(Assignment& assignment);
 
 private:
-	OrderedAssignmentList assignedAssignments;
-	OrderedAssignmentList completeAssignments;
+	Ordered_List<Assignment> assignedAssignments;
+	Ordered_List<Assignment> completeAssignments;
 	string fileName;
 };
 

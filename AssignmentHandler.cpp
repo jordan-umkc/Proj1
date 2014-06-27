@@ -4,6 +4,7 @@ Assignment handler implimentation
 
 #include "AssignmentHandler.h"
 #include "StringTokenizer.h"
+#include "HelperFunctions.h"
 #include "Date.h"
 #include <iostream>
 #include <fstream>
@@ -26,22 +27,15 @@ void AssignmentHandler::editAssignment()
 	// make a new assignment with the user input
 	Assignment temp;
 	temp.userInput();
-	// create a const_iterator that points to the assignment that will be edited in the assignedAssignments (OrderedAssignmentList)
-	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(temp);
-	char choice;
-	do
-	{
-		cout << "What do you want to edit?" << endl
-			<< "1. Assigned Date" << endl
-			<< "2. Due Date" << endl
-			<< "3. Description" << endl
-			<< "4. Nothing" << endl;
-		cin >> choice;
-	} while (choice >= 1 && choice <= 4);
-
+	cout << "What do you want to edit?" << endl
+		<< "1. Assigned Date" << endl
+		<< "2. Due Date" << endl
+		<< "3. Description" << endl
+		<< "4. Nothing" << endl;
+	int choice = getNumber(1, 4, "Enter your choice: ");
 	switch (choice)
 	{
-	case '1':
+	case 1:
 	{
 		Date theAssignedDate;
 		cout << "Enter Assigned Date (ex. 11/11/1111): ";
@@ -49,7 +43,7 @@ void AssignmentHandler::editAssignment()
 		temp.setAssignedDate(theAssignedDate);
 	}
 		break;
-	case '2':
+	case 2:
 	{
 		Date theDueDate;
 		cout << "Enter Due Date (ex. 11/11/1111): ";
@@ -57,7 +51,7 @@ void AssignmentHandler::editAssignment()
 		temp.setDueDate(theDueDate);
 	}
 		break;
-	case '3':
+	case 3:
 	{
 		string theDescription;
 		cout << "Enter Description: ";
@@ -65,9 +59,6 @@ void AssignmentHandler::editAssignment()
 		getline(cin, theDescription);
 		temp.setDescription(theDescription);
 	}
-		break;
-	case '4':
-		return;
 		break;
 	default:
 		cout << "Invalid Response" << endl;
@@ -77,12 +68,12 @@ void AssignmentHandler::editAssignment()
 
 	if (temp.getCurrentStatus() == "ASSIGNED" || temp.getCurrentStatus() == "LATE")
 	{
-		assignedAssignments.remove(iter->data());
+		assignedAssignments.remove(temp);
 		assignedAssignments.insert(temp);
 	}
 	else
 	{
-		completeAssignments.remove(iter->data());
+		completeAssignments.remove(temp);
 		completeAssignments.insert(temp);
 	}
 }
@@ -98,10 +89,8 @@ void AssignmentHandler::completeAnAssignment()
 	// make a new assignment with the user input
 	Assignment temp;
 	temp.userInput();
-	// create a const_iterator that points to the assignment that will be removed in the assignedAssignments (OrderedAssignmentList)
-	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(temp);
 	// remove the assignment from assignedAssignments
-	assignedAssignments.remove(iter->data());
+	assignedAssignments.remove(temp);
 	// change status of assignment to complete
 	temp.completeAssignment();
 	// add assignment to completed assignments (OrderedAssignmentList)
@@ -115,8 +104,8 @@ void AssignmentHandler::overdueAnAssignment(Assignment& assignment)
 
 void AssignmentHandler::displayOrderedAssignedAssignmentList(ostream& out)
     {
-        OrderedAssignmentList::const_iterator iter;
-        for (iter = assignedAssignments.begin(); iter != assignedAssignments.end(); iter++)
+        list<Assignment>::const_iterator iter = assignedAssignments.begin();
+        for (iter; iter != assignedAssignments.end(); iter++)
         {
 			iter->displayAssignment(out);
         }
@@ -124,8 +113,8 @@ void AssignmentHandler::displayOrderedAssignedAssignmentList(ostream& out)
 
 void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out)
 {
-    OrderedAssignmentList::const_iterator iter;
-    for (iter = completeAssignments.begin(); iter != completeAssignments.end(); iter++)
+    list<Assignment>::const_iterator iter = completeAssignments.begin();
+    for (iter; iter != completeAssignments.end(); iter++)
     {
 		iter->displayAssignment(out);
     }
@@ -133,9 +122,9 @@ void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out)
 
 void AssignmentHandler::countLateAssignments()
 {
-    OrderedAssignmentList::const_iterator iter;
+    list<Assignment>::const_iterator iter = completeAssignments.begin();
     int lateAssignmentCount = 0;
-    for (iter = completeAssignments.begin(); iter != completeAssignments.end(); iter++)
+    for (iter; iter != completeAssignments.end(); iter++)
     {
         if (iter->getCurrentStatus() == "LATE")
         {

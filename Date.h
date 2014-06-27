@@ -44,7 +44,7 @@ public:
 		return in;
 	}
 
-    bool operator <(Date other){
+    bool operator <(const Date other) const{
         if (year != other.year)
             return year < other.year;
 
