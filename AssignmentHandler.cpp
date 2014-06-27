@@ -15,71 +15,97 @@ using namespace std;
 // default, no argument constructor
 void AssignmentHandler::addAssignment()
 {
-	Date assignedDate, dueDate;
-	string description;
-
-	cout << "\nEnter the assignment's assigned date...\n";
-	cin >> assignedDate;
-	cout << "\nEnter the assignment's due date...\n";
-	cin >> dueDate;
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	cout << "\nEnter the description: ";
-	getline(cin, description);
-	cout << "\nEnter the status: ";
-
-	assignedAssignments.insert(Assignment(assignedDate, dueDate, description));
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	assignedAssignments.insert(*temp);
 }
 
 void AssignmentHandler::editAssignment()
 {
+	cout << "Enter the assignment date, due date and description of the assignment you want to edit." << endl;
+	// make a new assignment with the user input
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	// create a const_iterator that points to the assignment that will be edited in the assignedAssignments (OrderedAssignmentList)
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	char choice;
+	do
+	{
+		cout << "What do you want to edit?" << endl
+			<< "1. Assigned Date" << endl
+			<< "2. Due Date" << endl
+			<< "3. Description" << endl
+			<< "4. Nothing" << endl;
+		cin >> choice;
+	} while (choice >= 1 && choice <= 4);
 
+	switch (choice)
+	{
+	case '1':
+	{
+		Date theAssignedDate;
+		cout << "Enter Assigned Date (ex. 11/11/1111): ";
+		cin >> theAssignedDate;
+		temp->setAssignedDate(theAssignedDate);
+	}
+		break;
+	case '2':
+	{
+		Date theDueDate;
+		cout << "Enter Due Date (ex. 11/11/1111): ";
+		cin >> theDueDate;
+		temp->setDueDate(theDueDate);
+	}
+		break;
+	case '3':
+	{
+		string theDescription;
+		cout << "Enter Description: ";
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		getline(cin, theDescription);
+		temp->setDescription(theDescription);
+	}
+		break;
+	case '4':
+		return;
+		break;
+	default:
+		cout << "Invalid Response" << endl;
+		return;
+		break;
+	}
+
+	if (temp->getCurrentStatus() == "ASSIGNED" || temp->getCurrentStatus() == "LATE")
+	{
+		assignedAssignments.remove(iter->data());
+		assignedAssignments.insert(*temp);
+	}
+	else
+	{
+		completeAssignments.remove(iter->data());
+		completeAssignments.insert(*temp);
+	}
 }
-
 
 int AssignmentHandler::getLateAssignments()
 {
 	return 0; // temporary return
 }
 
-void AssignmentHandler::dummyFunction()
-{
-}
-
 void AssignmentHandler::completeAnAssignment()
 {
-
-    int tempintYear, tempintMonth, tempintDay;
-    string theDescription;
-    displayAllAssignments(cout);
-    cout << "Above is a list of the assignments. To make sure the correct assignment is flagged as completed, "
-        << "first enter the year of the assigned date Year: " << endl;
-    cin >> tempintYear;
-    cout << "Enter the assigned date Month: " << endl;
-    cin >> tempintMonth;
-    cout << "Enter the assigned date Day: " << endl;
-    cin >> tempintDay;
-    Date theAssignedDate(tempintYear, tempintMonth, tempintDay);
-
-    cout <<"Now enter the due date Year: " << endl;
-    cin >> tempintYear;
-    cout << "Enter the due date Month: " << endl;
-    cin >> tempintMonth;
-    cout << "Enter the due date Day: " << endl;
-    cin >> tempintDay;
-    Date theDueDate(tempintYear, tempintMonth, tempintDay);
-
-    cout << "Finally, enter the comments for the assignment: " << endl;
-    cin >> theDescription;
-
-    Assignment tempAssignment(theDueDate, theAssignedDate, theDescription);
-            assignedAssignments.remove(tempAssignment);
-            tempAssignment.completeAssignment();
-            completeAssignments.insert(tempAssignment);
-	        
-           displayOrderedCompletedAssignmentList(cout);
-      
-    //adding comment to commit this all
-    
+	cout << "Enter the assignment date, due date and description of the assignment you completed." << endl;
+	// make a new assignment with the user input
+	Assignment *temp = new Assignment();
+	temp->userInput();
+	// create a const_iterator that points to the assignment that will be removed in the assignedAssignments (OrderedAssignmentList)
+	OrderedAssignmentList::const_iterator iter = assignedAssignments.find(*temp);
+	// remove the assignment from assignedAssignments
+	assignedAssignments.remove(iter->data());
+	// change status of assignment to complete
+	temp->completeAssignment();
+	// add assignment to completed assignments (OrderedAssignmentList)
+	completeAssignments.insert(*temp);
 }
 
 void AssignmentHandler::overdueAnAssignment(Assignment& assignment)
