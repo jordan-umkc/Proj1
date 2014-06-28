@@ -46,9 +46,14 @@ public:
 	
 	void displayAssignment(ostream& out) const
 	{
+		string statusString;
+		if (currentStatus == ASSIGNED) statusString = "Assigned";
+		if (currentStatus == LATE) statusString = "Late";
+		if (currentStatus == COMPLETED) statusString = "Completed";
+
 		out << "Assigned Date: " << assignedDate << setw(15)
 			<< "Due Date: " << dueDate << setw(15)
-			<< "Status: " << getCurrentStatus() << endl
+			<< "Status: " << statusString << endl
 			<< "Description: " << description << endl << endl;
 	}
 
@@ -76,8 +81,8 @@ public:
 		return currentStatus;
     }
 
-    void completeAssignment() {currentStatus = COMPLETED;}
-    void overdueAssignment() {currentStatus = LATE;}
+	void completeAssignment() { currentStatus = COMPLETED; sortBy = DUEDATE; }
+	void overdueAssignment() { currentStatus = LATE; }
 
     //Assignment::status getStatus() const {return currentStatus;}
 
