@@ -12,20 +12,22 @@ using namespace std;
 
 class Assignment {
 public:
+
+	enum status { LATE, ASSIGNED, COMPLETED };
+
+	enum memberDate { ASSIGNEDDATE, DUEDATE };
+
 	// default no-argument constructor
-	Assignment() : assignedDate(), dueDate(), description("") { currentStatus = ASSIGNED; }
+	Assignment() : assignedDate(), dueDate(), description(""), sortBy(ASSIGNEDDATE), currentStatus(ASSIGNED) {}
 
 	// argument constructor
-	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription)
-	{
-		currentStatus = ASSIGNED;
-	}
+	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription), sortBy(ASSIGNEDDATE), currentStatus(ASSIGNED) {}
 
 	// copy constructor
-	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description) { currentStatus = a.currentStatus; }
+	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description), sortBy(a.sortBy), currentStatus(a.currentStatus) {}
 
 	// read in user data
-	const Assignment& userInput()
+	void userInput()
 	{ 
 		Date theDueDate, theAssignedDate;
 		string theDescription;
@@ -39,7 +41,6 @@ public:
 		assignedDate = theAssignedDate;
 		dueDate = theDueDate;
 		description = theDescription;
-		return *this;
 	}
 
 	
@@ -70,12 +71,11 @@ public:
     Date getDueDate() const {return dueDate;}
     string getDescription() const {return description;}
 
-    string getCurrentStatus() const
+	status getCurrentStatus() const
     {
-        if (currentStatus == ASSIGNED) {return "ASSIGNED";}
-        else if (currentStatus == COMPLETED) {return "COMPLETE";}
-        else {return "LATE";}
+		return currentStatus;
     }
+
     void completeAssignment() {currentStatus = COMPLETED;}
     void overdueAssignment() {currentStatus = LATE;}
 
@@ -96,17 +96,20 @@ public:
 	}
 
 	bool operator <(const Assignment& other) const {
-		return assignedDate < other.assignedDate;
+		if (sortBy == ASSIGNEDDATE)
+			return assignedDate < other.assignedDate;
+		else
+			return dueDate < other.dueDate;
 	}
+
 
 
 private:
 	Date assignedDate;
 	Date dueDate;
 	string description;
-    enum status {LATE = 0, ASSIGNED = 1, COMPLETED = 2}; //stated explicitly so we can use the array below easily
-    
-    status currentStatus;
+    Assignment::status currentStatus;
+	Assignment::memberDate sortBy;
 };
 
 #endif

@@ -66,7 +66,7 @@ void AssignmentHandler::editAssignment()
 		break;
 	}
 
-	if (temp.getCurrentStatus() == "ASSIGNED" || temp.getCurrentStatus() == "LATE")
+	if (temp.getCurrentStatus() == Assignment::status::ASSIGNED || temp.getCurrentStatus() == Assignment::status::LATE)
 	{
 		assignedAssignments.remove(temp);
 		assignedAssignments.insert(temp);
@@ -126,7 +126,7 @@ void AssignmentHandler::countLateAssignments()
     int lateAssignmentCount = 0;
     for (iter; iter != completeAssignments.end(); iter++)
     {
-        if (iter->getCurrentStatus() == "LATE")
+        if (iter->getCurrentStatus() == Assignment::status::LATE)
         {
             lateAssignmentCount++;
         }
