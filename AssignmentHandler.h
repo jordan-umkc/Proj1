@@ -13,17 +13,15 @@ public:
 	AssignmentHandler() : assignedAssignments(), completeAssignments() {} // default constructor
 	
 	void addAssignment();
-	void editAssignment();
+	void editAssignment(const Date);
     void displayOrderedAssignedAssignmentList(ostream& out);
     void displayOrderedCompletedAssignmentList(ostream& out);
     void displayAllAssignments(ostream& out);
-	int getLateAssignments();
 	void importAssignmentsFromFile(const string& sourceName);
 	string trim(const string&);
     void countLateAssignments();
-    void completeAnAssignment();
-    void overdueAnAssignment(Assignment& assignment);
-
+	void completeAnAssignment(const Date);
+	Assignment findAssignment(Ordered_List<Assignment>, const Date);
 private:
 	Ordered_List<Assignment> assignedAssignments;
 	Ordered_List<Assignment> completeAssignments;

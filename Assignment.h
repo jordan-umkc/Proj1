@@ -26,7 +26,30 @@ public:
 	// copy constructor
 	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description), sortBy(a.sortBy), currentStatus(a.currentStatus) {}
 
-	// read in user data
+	// Setters
+	void setAssignedDate(const Date& theDate) { assignedDate = theDate; }
+	void setDueDate(const Date& theDate) { dueDate = theDate; }
+	void setDescription(const string& theDescription) { description = theDescription; }
+	// Getters
+	Date getAssignedDate() const { return assignedDate; }
+	Date getDueDate() const { return dueDate; }
+	string getDescription() const { return description; }
+	status getCurrentStatus() const { return currentStatus; }
+	// changing status
+	void completeAssignment()
+	{
+		sortBy = DUEDATE;
+		Date currentDate;
+		cout << "What is today's date? (ex. 11/11/1111) ";
+		cin >> currentDate;
+		// check if assignment is overdue
+		if (currentDate <= dueDate)
+			currentStatus = COMPLETED;
+		else
+			currentStatus = LATE;
+	}
+
+	// read in user data to assign the private variables of an assignment (used in AssignmentHandler::addAssignment)
 	void userInput()
 	{ 
 		Date theDueDate, theAssignedDate;
@@ -43,7 +66,16 @@ public:
 		description = theDescription;
 	}
 
-	
+	// read in assigned date from user (used in AssignmentHandler to find the assignment the user wants to complete or edit)
+	void userInputAssignedDate()
+	{
+		Date theAssignedDate;
+		cout << "Enter Assigned Date (ex. 11/11/1111): ";
+		cin >> theAssignedDate;
+		assignedDate = theAssignedDate;
+	}
+
+	//  display information about an assignment
 	void displayAssignment(ostream& out) const
 	{
 		string statusString;
@@ -57,37 +89,11 @@ public:
 			<< "Description: " << description << endl << endl;
 	}
 
-	void setAssignedDate(const Date& theDate)
-	{
-		assignedDate = theDate;
-	}
-
-	void setDueDate(const Date& theDate)
-	{
-		dueDate = theDate;
-	}
-
-	void setDescription(const string& theDescription)
-	{
-		description = theDescription;
-	}
-
-	Date getAssignedDate() const { return assignedDate; }
-    Date getDueDate() const {return dueDate;}
-    string getDescription() const {return description;}
-
-	status getCurrentStatus() const
-    {
-		return currentStatus;
-    }
-
-	void completeAssignment() { currentStatus = COMPLETED; sortBy = DUEDATE; }
-	void overdueAssignment() { currentStatus = LATE; }
-
     //Assignment::status getStatus() const {return currentStatus;}
 
 	// assigned date is id
-	bool operator ==(const Assignment other) const{
+	bool operator ==(const Assignment other) const
+	{
 		return assignedDate == other.assignedDate;
 	}
 
@@ -100,14 +106,13 @@ public:
 		return *this;
 	}
 
-	bool operator <(const Assignment& other) const {
+	bool operator <(const Assignment& other) const 
+	{
 		if (sortBy == ASSIGNEDDATE)
 			return assignedDate < other.assignedDate;
 		else
 			return dueDate < other.dueDate;
 	}
-
-
 
 private:
 	Date assignedDate;

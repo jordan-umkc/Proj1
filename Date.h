@@ -130,6 +130,10 @@ public:
         return year == other.year && month == other.month && day == other.day;
     }
 
+	bool operator !=(const Date other) const{
+		return !(*this == other);
+	}
+
     bool operator <=(Date other){
         return this->operator<(other) || this->operator==(other);
     }

@@ -39,11 +39,21 @@ void main()
 		case 1:
 			Assignments.addAssignment();
 			break;
-        case 2:
-            Assignments.completeAnAssignment();
+		case 2:
+		{
+			Date temp;
+			cout << "Enter the assigned date of the assignment you want to edit. ";
+			cin >> temp;
+			Assignments.completeAnAssignment(temp);
+		}
             break;
-        case 3:
-			Assignments.editAssignment(); 
+		case 3:
+		{
+			Date temp;
+			cout << "Enter the assigned date of the assignment you want to edit. ";
+			cin >> temp;
+			Assignments.editAssignment(temp);
+		}
             break;
 		case 4:
 			Assignments.displayAllAssignments(cout);
@@ -62,7 +72,6 @@ void main()
 		}
 
 	} while (choice != 7);
-    
 }
 
 
