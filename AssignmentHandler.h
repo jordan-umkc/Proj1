@@ -12,6 +12,8 @@ class AssignmentHandler {
 public:
 	AssignmentHandler() : assignedAssignments(), completeAssignments() {} // default constructor
 	
+    void updateFile(const string& fName);
+
 	void addAssignment();
 	void editAssignment(const Date);
     void displayOrderedAssignedAssignmentList(ostream& out);

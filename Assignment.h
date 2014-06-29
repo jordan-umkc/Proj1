@@ -21,7 +21,7 @@ public:
 	Assignment() : assignedDate(), dueDate(), description(""), sortBy(ASSIGNEDDATE), currentStatus(ASSIGNED) {}
 
 	// argument constructor
-	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription), sortBy(ASSIGNEDDATE), currentStatus(ASSIGNED) {}
+	Assignment(Date anAssignedDate, Date aDueDate, std::string aDescription, Assignment::status aStatus) : assignedDate(anAssignedDate), dueDate(aDueDate), description(aDescription), sortBy(ASSIGNEDDATE), currentStatus(aStatus) {}
 
 	// copy constructor
 	Assignment(const Assignment& a) : assignedDate(a.assignedDate), dueDate(a.dueDate), description(a.description), sortBy(a.sortBy), currentStatus(a.currentStatus) {}
@@ -35,6 +35,7 @@ public:
 	Date getDueDate() const { return dueDate; }
 	string getDescription() const { return description; }
 	status getCurrentStatus() const { return currentStatus; }
+
 	// changing status
 	void completeAssignment()
 	{
@@ -79,14 +80,13 @@ public:
 	void displayAssignment(ostream& out) const
 	{
 		string statusString;
-		if (currentStatus == ASSIGNED) statusString = "Assigned";
-		if (currentStatus == LATE) statusString = "Late";
-		if (currentStatus == COMPLETED) statusString = "Completed";
+		if (currentStatus == ASSIGNED) statusString = "ASSIGNED";
+		if (currentStatus == LATE) statusString = "LATE";
+		if (currentStatus == COMPLETED) statusString = "COMPLETED";
 
-		out << "Assigned Date: " << assignedDate << setw(15)
-			<< "Due Date: " << dueDate << setw(15)
-			<< "Status: " << statusString << endl
-			<< "Description: " << description << endl << endl;
+		out << assignedDate << "," << setw(15)
+			<< dueDate << "," << setw(15)
+			<< description << "," << setw(15) << statusString << endl;
 	}
 
     //Assignment::status getStatus() const {return currentStatus;}

@@ -64,15 +64,14 @@ void AssignmentHandler::editAssignment(const Date theDate) // O(n)
 	}
 		break;
 	case 4:
-		return;
 		break;
 	default:
 		cout << "Invalid Response" << endl;
-		return;
 		break;
 	}
 
 	assignedAssignments.insert(temp);
+    updateFile("Assignments.txt");
 }
 
 void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
@@ -85,10 +84,14 @@ void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
 	}
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(temp);
+
+    temp.displayAssignment(cout);
 	// change status of assignment to complete
 	temp.completeAssignment();
+
 	// add assignment to completed assignments (OrderedAssignmentList)
 	completeAssignments.insert(temp);
+    updateFile("Assignments.txt");
 }
 
 // display all assigned assignments
@@ -139,14 +142,15 @@ void AssignmentHandler::displayAllAssignments(ostream& out) // O(n)
 void AssignmentHandler::importAssignmentsFromFile(const string& fName) // O(n)
 {
 	fileName = fName;
-	ifstream in(fName.c_str(), ios::app);
+	ifstream in(fName.c_str());
 	if (in)
 	{
-        Assignment temp_assignment;
 		Date assignedDate, dueDate;
-		string aDate, dDate, desc, line;
+		string aDate, dDate, desc, line, statusString;
+        Assignment::status status;
 		while (getline(in, line))
 		{
+            if (line == "") {break;}
 			String_Tokenizer stLine(line, ",");
 			//read in assigned date
 			aDate = trim(stLine.next_token());
@@ -162,12 +166,32 @@ void AssignmentHandler::importAssignmentsFromFile(const string& fName) // O(n)
 			dueDate.setYear(stoi(trim(stDDate.next_token())));
 			// read in description
 			desc = trim(stLine.next_token());
-            temp_assignment = Assignment(assignedDate, dueDate, desc);
-            assignedAssignments.insert(temp_assignment);
+            //read in status
+            statusString = trim(stLine.next_token());
+            if (statusString == "ASSIGNED") {status = Assignment::status::ASSIGNED;}
+            else if (statusString == "COMPLETED") {status = Assignment::status::COMPLETED;}
+            else {status = Assignment::LATE;}
+            Assignment temp_assignment = Assignment(assignedDate, dueDate, desc, status);
+            if (status == Assignment::ASSIGNED) {assignedAssignments.insert(temp_assignment);}
+            else {completeAssignments.insert(temp_assignment);}
 		}
+        
 	}
 	else
 		cout << "File Doesn't Exist" << endl;
+    in.close(); //close file so it can be edited later
+}
+
+void AssignmentHandler::updateFile(const string& fName)
+{
+    fileName = fName;
+    fstream filestream(fName.c_str());
+    filestream.flush();
+    displayOrderedAssignedAssignmentList(filestream); 
+    filestream.flush();
+    displayOrderedCompletedAssignmentList(filestream);
+    filestream.flush();
+    filestream.close();
 }
 
 // return the first assignment that has the same date as theAssignedDate (const Date) parameter
