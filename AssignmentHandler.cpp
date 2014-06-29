@@ -12,7 +12,7 @@ Assignment handler implimentation
 using namespace std;
 
 // default, no argument constructor
-void AssignmentHandler::addAssignment()
+void AssignmentHandler::addAssignment() // O(n)
 {
 	Assignment temp;
 	temp.userInput();
@@ -20,9 +20,14 @@ void AssignmentHandler::addAssignment()
 }
 
 // edit an assignment in the assigned assignments list
-void AssignmentHandler::editAssignment(const Date theDate)
+void AssignmentHandler::editAssignment(const Date theDate) // O(n)
 {
 	Assignment temp = findAssignment(assignedAssignments, theDate);
+	if (temp.getAssignedDate() != theDate)
+	{
+		cout << "Assignment not found" << endl;
+		return;
+	}
 	assignedAssignments.remove(temp);
 
 	cout << "What do you want to edit?" << endl
@@ -70,20 +75,24 @@ void AssignmentHandler::editAssignment(const Date theDate)
 	assignedAssignments.insert(temp);
 }
 
-void AssignmentHandler::completeAnAssignment(const Date theDate)
+void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
 {
 	Assignment temp = findAssignment(assignedAssignments, theDate);
+	if (temp.getAssignedDate() != theDate)
+	{
+		cout << "Assignment not found" << endl;
+		return;
+	}
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(temp);
 	// change status of assignment to complete
 	temp.completeAssignment();
 	// add assignment to completed assignments (OrderedAssignmentList)
 	completeAssignments.insert(temp);
-	
 }
 
 // display all assigned assignments
-void AssignmentHandler::displayOrderedAssignedAssignmentList(ostream& out)
+void AssignmentHandler::displayOrderedAssignedAssignmentList(ostream& out) // O(n)
 {
 	list<Assignment>::const_iterator iter = assignedAssignments.begin();
 	for (iter; iter != assignedAssignments.end(); iter++)
@@ -93,7 +102,7 @@ void AssignmentHandler::displayOrderedAssignedAssignmentList(ostream& out)
 }
 
 // display all completed and late assignments
-void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out)
+void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out) // O(n)
 {
     list<Assignment>::const_iterator iter = completeAssignments.begin();
     for (iter; iter != completeAssignments.end(); iter++)
@@ -103,7 +112,7 @@ void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out)
 }
 
 // output the number of late assignmets to the screen
-void AssignmentHandler::countLateAssignments()
+void AssignmentHandler::countLateAssignments() // O(n)
 {
     list<Assignment>::const_iterator iter = completeAssignments.begin();
     int lateAssignmentCount = 0;
@@ -118,16 +127,16 @@ void AssignmentHandler::countLateAssignments()
 }
 
 // output all assigned, completed and late assignments
-void AssignmentHandler::displayAllAssignments(ostream& out)
+void AssignmentHandler::displayAllAssignments(ostream& out) // O(n)
 {
 	cout << "Here are the assignments...\n\n";
-    displayOrderedAssignedAssignmentList(out);
+    displayOrderedAssignedAssignmentList(out); 
     displayOrderedCompletedAssignmentList(out);
 	cout << "That's it!\n\n";
 }
 
 //reads assignments from file and adds them to the assigned assignments list
-void AssignmentHandler::importAssignmentsFromFile(const string& fName)
+void AssignmentHandler::importAssignmentsFromFile(const string& fName) // O(n)
 {
 	fileName = fName;
 	ifstream in(fName.c_str(), ios::app);
@@ -161,9 +170,8 @@ void AssignmentHandler::importAssignmentsFromFile(const string& fName)
 		cout << "File Doesn't Exist" << endl;
 }
 
-// return true if an assignment with the same assignment date as theAssignedDate is in theList
-// else return false
-Assignment AssignmentHandler::findAssignment(Ordered_List<Assignment> theList, const Date theAssignedDate)
+// return the first assignment that has the same date as theAssignedDate (const Date) parameter
+Assignment AssignmentHandler::findAssignment(Ordered_List<Assignment> theList, const Date theAssignedDate) // O(n)
 {
 	Ordered_List<Assignment>::const_iterator iter = theList.begin();
 	while (iter != theList.end())
