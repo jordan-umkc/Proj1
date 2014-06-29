@@ -64,11 +64,9 @@ void AssignmentHandler::editAssignment(const Date theDate) // O(n)
 	}
 		break;
 	case 4:
-		return;
 		break;
 	default:
 		cout << "Invalid Response" << endl;
-		return;
 		break;
 	}
 
