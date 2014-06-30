@@ -8,7 +8,6 @@ Team members: Jordan Larson, Evan Bell, Brenton Klassen
 #include "HelperFunctions.h"
 #include "AssignmentHandler.h"
 #include <iostream>
-#include <stdlib.h>
 
 void main()
 {

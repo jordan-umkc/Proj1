@@ -5,10 +5,8 @@ Assignment handler implimentation
 #include "AssignmentHandler.h"
 #include "StringTokenizer.h"
 #include "HelperFunctions.h"
-#include "Date.h"
 #include <iostream>
 #include <fstream>
-#include <iomanip>
 using namespace std;
 
 // default, no argument constructor
@@ -75,7 +73,7 @@ void AssignmentHandler::editAssignment(const Date theDate) // O(n)
     updateFile("Assignments.txt");
 }
 
-void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
+void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n+m)
 {
 	Assignment temp = findAssignment(assignedAssignments, theDate);
 	if (temp == Assignment())
@@ -83,7 +81,7 @@ void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
 		cout << "\nAssignment not found.\n" << endl;
 		return;
 	}
-
+	 
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(temp);
 
@@ -91,7 +89,7 @@ void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
 	// change status of assignment to complete
 	(temp).completeAssignment();
 
-	// add assignment to completed assignments (OrderedAssignmentList)
+	// add assignment to completed assignments (Ordered_List)
 	completeAssignments.insert(temp);
     updateFile("Assignments.txt");
 }
@@ -119,7 +117,7 @@ void AssignmentHandler::displayOrderedCompletedAssignmentList(ostream& out) // O
 // output the number of late assignmets to the screen
 void AssignmentHandler::countLateAssignments() // O(n)
 {
-    list<Assignment>::const_iterator iter = completeAssignments.begin();
+    Ordered_List<Assignment>::const_iterator iter = completeAssignments.begin();
     int lateAssignmentCount = 0;
     for (iter; iter != completeAssignments.end(); iter++)
     {
@@ -132,7 +130,7 @@ void AssignmentHandler::countLateAssignments() // O(n)
 }
 
 // output all assigned, completed and late assignments
-void AssignmentHandler::displayAllAssignments(ostream& out) // O(n)
+void AssignmentHandler::displayAllAssignments(ostream& out) // O(n+m)
 {
 	cout << "\nASSIGNED ASSIGNMENTS\n\n"
 		<< setw(12) << left << "Assigned"
