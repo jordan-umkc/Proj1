@@ -23,11 +23,12 @@ void AssignmentHandler::addAssignment() // O(n)
 void AssignmentHandler::editAssignment(const Date theDate) // O(n)
 {
 	Assignment temp = findAssignment(assignedAssignments, theDate);
-	if (temp.getAssignedDate() != theDate)
+	if (temp == Assignment())
 	{
 		cout << "Assignment not found" << endl;
 		return;
 	}
+
 	assignedAssignments.remove(temp);
 
 	cout << "What do you want to edit?" << endl
@@ -77,17 +78,18 @@ void AssignmentHandler::editAssignment(const Date theDate) // O(n)
 void AssignmentHandler::completeAnAssignment(const Date theDate) // O(n)
 {
 	Assignment temp = findAssignment(assignedAssignments, theDate);
-	if (temp.getAssignedDate() != theDate)
+	if (temp == Assignment())
 	{
-		cout << "Assignment not found" << endl;
+		cout << "\nAssignment not found.\n" << endl;
 		return;
 	}
+
 	// remove the assignment from assignedAssignments
 	assignedAssignments.remove(temp);
 
-    temp.displayAssignment(cout);
+    (temp).displayAssignment(cout);
 	// change status of assignment to complete
-	temp.completeAssignment();
+	(temp).completeAssignment();
 
 	// add assignment to completed assignments (OrderedAssignmentList)
 	completeAssignments.insert(temp);
@@ -132,10 +134,22 @@ void AssignmentHandler::countLateAssignments() // O(n)
 // output all assigned, completed and late assignments
 void AssignmentHandler::displayAllAssignments(ostream& out) // O(n)
 {
-	cout << "Here are the assignments...\n\n";
-    displayOrderedAssignedAssignmentList(out); 
-    displayOrderedCompletedAssignmentList(out);
-	cout << "That's it!\n\n";
+	cout << "\nASSIGNED ASSIGNMENTS\n\n"
+		<< setw(12) << left << "Assigned"
+		<< setw(12) << left << "Due"
+		<< setw(20) << left << "Description"
+		<< setw(12) << left << "Status" << endl
+		<< "-------------------------------------------------------\n";
+	displayOrderedAssignedAssignmentList(out);
+
+	cout << "\nCOMPLETED ASSIGNMENTS\n\n"
+		<< setw(12) << left << "Assigned"
+		<< setw(12) << left << "Due"
+		<< setw(20) << left << "Description"
+		<< setw(12) << left << "Status" << endl
+		<< "-------------------------------------------------------\n";
+	displayOrderedCompletedAssignmentList(out);
+	cout << endl;
 }
 
 //reads assignments from file and adds them to the assigned assignments list
@@ -185,11 +199,11 @@ void AssignmentHandler::importAssignmentsFromFile(const string& fName) // O(n)
 void AssignmentHandler::updateFile(const string& fName)
 {
     fileName = fName;
-    fstream filestream(fName.c_str());
+    ofstream filestream(fName.c_str());
     filestream.flush();
     displayOrderedAssignedAssignmentList(filestream); 
     filestream.flush();
-    displayOrderedCompletedAssignmentList(filestream);
+	displayOrderedCompletedAssignmentList(filestream);
     filestream.flush();
     filestream.close();
 }
@@ -205,7 +219,7 @@ Assignment AssignmentHandler::findAssignment(Ordered_List<Assignment> theList, c
 		else
 			iter++;
 	}
-	return *iter;
+	return Assignment();
 }
 
 string AssignmentHandler::trim(const string& the_string)

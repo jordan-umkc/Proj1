@@ -10,8 +10,6 @@ Team members: Jordan Larson, Evan Bell, Brenton Klassen
 #include <iostream>
 #include <stdlib.h>
 
-int getNumber(int low, int high, std::string message);
-
 void main()
 {
 	// user's choice

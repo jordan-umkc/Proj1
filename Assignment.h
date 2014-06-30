@@ -30,6 +30,7 @@ public:
 	void setAssignedDate(const Date& theDate) { assignedDate = theDate; }
 	void setDueDate(const Date& theDate) { dueDate = theDate; }
 	void setDescription(const string& theDescription) { description = theDescription; }
+
 	// Getters
 	Date getAssignedDate() const { return assignedDate; }
 	Date getDueDate() const { return dueDate; }
@@ -42,6 +43,7 @@ public:
 		sortBy = DUEDATE;
 		Date currentDate;
 		cout << "What is today's date? (ex. 11/11/1111) ";
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		cin >> currentDate;
 		// check if assignment is overdue
 		if (currentDate <= dueDate)
@@ -84,12 +86,12 @@ public:
 		if (currentStatus == LATE) statusString = "LATE";
 		if (currentStatus == COMPLETED) statusString = "COMPLETED";
 
-		out << assignedDate << "," << setw(15)
-			<< dueDate << "," << setw(15)
-			<< description << "," << setw(15) << statusString << endl;
+		out << setw(12) << left << assignedDate.toString() + ","
+			<< setw(12) << left << dueDate.toString() + ","
+			<< setw(20) << left << description + "," 
+			<< setw(12) << left << statusString << endl;
 	}
 
-    //Assignment::status getStatus() const {return currentStatus;}
 
 	// assigned date is id
 	bool operator ==(const Assignment other) const

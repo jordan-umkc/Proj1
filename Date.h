@@ -23,11 +23,9 @@ public:
             throw std::invalid_argument(" The date is not valid");
     }
 
-    friend ostream& operator << (ostream& out, const Date& d)
-    {
-        out << d.month << "/" << d.day << "/" << d.year;
-        return out;
-    }
+	string toString() const {
+		return to_string(month) + "/" + to_string(day) + "/" + to_string(year);
+	}
 
 	friend istream& operator >> (istream& in, Date& d)
 	{

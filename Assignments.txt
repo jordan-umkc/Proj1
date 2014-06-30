@@ -1,7 +1,6 @@
-6/21/2014,              6/25/2014,It's a project!,           LATE
-6/25/2014,              6/30/2014,       comment1,           LATE
-6/30/2014,              7/5/2014,       comment2,           LATE
-7/5/2014,              7/20/2014,       comment3,      COMPLETED
-7/10/2014,              7/25/2014,       comment4,      COMPLETED
-7/15/2014,              7/30/2014,       comment5,           LATE
-
+6/21/2014,  6/25/2014,  It's a project!,    COMPLETED   
+6/25/2014,  6/30/2014,  comment1,           COMPLETED   
+6/30/2014,  7/5/2014,   comment2,           LATE        
+7/5/2014,   7/20/2014,  comment3,           COMPLETED   
+7/10/2014,  7/25/2014,  comment4,           COMPLETED   
+7/15/2014,  7/30/2014,  comment5,           LATE        
